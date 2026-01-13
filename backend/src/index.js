@@ -3,6 +3,7 @@ import connectDB from "./db/db.js";
 import adminRoutes from "./routes/AdminRoutes.js";
 import sellerRoutes from "./routes/SellerRoutes.js";
 import authRoutes from "./routes/AuthRoutes.js";
+import userRoutes from "./routes/UserRoutes.js"
 import { body } from "express-validator";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth",authRoutes)
+app.use("/api/users",userRoutes)
 app.use("/sellers", sellerRoutes);
 app.use("/admin", adminRoutes);
 

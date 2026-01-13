@@ -8,4 +8,6 @@ router.post(
   authController.sendLoginOtp
 );
 
+router.post("/signup",authController.createUser);
+router.post("/signin",authController.signin);
 export default router;
