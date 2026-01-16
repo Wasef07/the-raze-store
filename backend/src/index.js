@@ -4,6 +4,8 @@ import adminRoutes from "./routes/AdminRoutes.js";
 import sellerRoutes from "./routes/SellerRoutes.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import userRoutes from "./routes/UserRoutes.js"
+import sellerProductRoutes from "./routes/SellerProductRoutes.js";
+import productRoutes from "./routes/ProductRoutes.js"
 import { body } from "express-validator";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -21,9 +23,11 @@ app.get("/", (req, res) => {
 app.use("/auth",authRoutes)
 app.use("/api/users",userRoutes)
 app.use("/sellers", sellerRoutes);
+app.use("/products",productRoutes);
+app.use("/api/sellers/products",sellerProductRoutes)
 app.use("/admin", adminRoutes);
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
