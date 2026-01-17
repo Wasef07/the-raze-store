@@ -6,6 +6,7 @@ import authRoutes from "./routes/AuthRoutes.js";
 import userRoutes from "./routes/UserRoutes.js"
 import sellerProductRoutes from "./routes/SellerProductRoutes.js";
 import productRoutes from "./routes/ProductRoutes.js"
+import cartRoutes from "./routes/CartRoutes.js"
 import { body } from "express-validator";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -26,6 +27,7 @@ app.use("/sellers", sellerRoutes);
 app.use("/products",productRoutes);
 app.use("/api/sellers/products",sellerProductRoutes)
 app.use("/admin", adminRoutes);
+app.use("/api/cart",cartRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

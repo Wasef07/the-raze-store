@@ -1,4 +1,4 @@
-import Cart from "../model/cart.js";
+import Cart from "../model/Cart.js";
 import User from "../model/User.js";
 import VerificationCode from "../model/VerificationCode.js";
 import generateOTP from "../util/generateOtp.js";
