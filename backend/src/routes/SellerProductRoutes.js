@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.use(sellerAuthMiddleware);
 
-// SELLER ROUTES
 router.get("/", productController.getMyProducts);
 router.post("/", productController.createProduct);
 router.patch("/:productId", productController.updateProduct);
