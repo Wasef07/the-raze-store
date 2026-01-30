@@ -32,7 +32,7 @@ const Products = () => {
 
   return (
     <div className="mt-10">
-      {/* Page Title */}
+
       <h1 className="text-3xl text-center font-bold text-gray-700 pb-6 uppercase">
         Women Sarees
       </h1>
@@ -41,9 +41,9 @@ const Products = () => {
         <aside className="hidden lg:block w-[18%]  pr-3">
           <FilterSection />
         </aside>
-        {/* Products */}
+
         <main className="w-full lg:w-[82%] space-y-8 px-4">
-          {/* Sort Row */}
+
           <div className="flex items-center justify-end h-10">
             <FormControl size="small" className="min-w-[180px] bg-white">
               <InputLabel id="sort-label">Sort</InputLabel>
@@ -59,7 +59,7 @@ const Products = () => {
             </FormControl>
           </div>
 
-          {/* Product Grid */}
+
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 px-4">
             {mockProducts.map((item, index) => (
               <ProductCard key={index} item={item} />

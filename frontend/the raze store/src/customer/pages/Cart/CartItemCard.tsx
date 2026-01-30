@@ -6,17 +6,17 @@ const CartItemCard = () => {
   return (
     <div className="border border-gray-300 rounded-md bg-white relative">
       
-      {/* TOP */}
+
       <div className="p-4 flex gap-3">
         
-        {/* IMAGE */}
+
         <img
           className="w-[90px] h-[110px] object-cover rounded-md"
           src="https://lajreedesigner.com/cdn/shop/files/KP-6026_4.jpg?v=1745490955&width=750"
           alt="product"
         />
 
-        {/* CONTENT */}
+
         <div className="space-y-1 flex-1">
           <h2 className="text-sm font-semibold text-gray-800">
             Lajree Designer
@@ -36,7 +36,7 @@ const CartItemCard = () => {
         </div>
       </div>
 
-      {/* CLOSE */}
+
       <IconButton
         size="small"
         sx={{
@@ -50,10 +50,10 @@ const CartItemCard = () => {
 
       <Divider />
 
-      {/* BOTTOM */}
+
       <div className="px-4 py-2 flex justify-between items-center">
         
-        {/* QUANTITY */}
+
         <div className="flex items-center border border-gray-300 rounded-md">
           <Button size="small" sx={{ minWidth: 30 }}>
             <Remove fontSize="small" />
@@ -68,7 +68,7 @@ const CartItemCard = () => {
           </Button>
         </div>
 
-        {/* PRICE */}
+
         <p className="text-sm font-semibold text-gray-800">
           ₹1,499
         </p>

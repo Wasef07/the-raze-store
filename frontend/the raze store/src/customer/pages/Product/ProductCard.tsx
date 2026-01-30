@@ -20,19 +20,17 @@ const ProductCard = ({ item }: any) => {
         />
       </div>
 
-      {/* Product Details */}
+
       <div className="pt-3 space-y-2">
-        {/* Seller / Brand */}
+
         <h3 className="text-sm font-semibold text-gray-700 truncate">
           {item.seller.businessDetails.businessName}
         </h3>
 
-        {/* Product Title */}
         <p className="text-sm text-gray-500 line-clamp-2 leading-snug">
           Extraordinary Yellow Soft Silk Saree With Glowing Blouse Piece
         </p>
 
-        {/* Price */}
         <div className="flex items-center gap-2">
           <span className="text-base font-semibold text-gray-900">
             ₹1,499

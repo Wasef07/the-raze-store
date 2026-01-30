@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <footer className="bg-slate-800 text-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between mt-20">
       
         <div className="text-center md:text-left">
           <h3 className="text-lg font-semibold">The Raze Store</h3>

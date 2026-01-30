@@ -17,7 +17,7 @@ const FilterSection = () => {
 
   return (
     <div className="bg-white rounded-md border space-y-4">
-      {/* Header */}
+
       <div className="flex items-center justify-between px-3 py-2 border-b">
         <p className="text-base font-semibold text-gray-800">Filters</p>
         <Button size="small" sx={{ textTransform: "none" }}>
@@ -26,7 +26,7 @@ const FilterSection = () => {
       </div>
 
       <div className="px-3 space-y-6">
-        {/* COLOR */}
+
         <section>
           <FormControl fullWidth>
             <FormLabel
@@ -89,7 +89,6 @@ const FilterSection = () => {
           </FormControl>
         </section>
 
-        {/* PRICE */}
         <section>
           <FormControl fullWidth>
             <FormLabel
@@ -117,7 +116,6 @@ const FilterSection = () => {
           </FormControl>
         </section>
 
-        {/* DISCOUNT */}
         <section>
           <FormControl fullWidth>
             <FormLabel

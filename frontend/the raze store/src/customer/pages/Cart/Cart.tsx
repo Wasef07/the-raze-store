@@ -10,17 +10,17 @@ const Cart = () => {
       <div className="max-w-[1100px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* LEFT – CART ITEMS */}
+
           <div className="lg:col-span-2 space-y-4">
             {[1, 1, 1, 1].map((_, index) => (
               <CartItemCard key={index} />
             ))}
           </div>
 
-          {/* RIGHT – SUMMARY */}
+
           <div className="space-y-4">
             
-            {/* COUPON */}
+
             <div className="border border-gray-300 rounded-lg bg-white px-5 py-4">
               <div className="flex gap-3 items-center text-sm font-medium">
                 <LocalOffer color="primary" sx={{ fontSize: 18 }} />
@@ -33,7 +33,7 @@ const Cart = () => {
               </div>
             </div>
 
-            {/* PRICING */}
+
             <div className="border border-gray-300 rounded-lg bg-white">
               <PricingCard />
               <div className="p-4">
@@ -43,7 +43,7 @@ const Cart = () => {
               </div>
             </div>
 
-            {/* WISHLIST */}
+
             <div className="border border-gray-300 rounded-lg bg-white px-5 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
               <span className="text-sm font-medium">Add from wishlist</span>
               <Favorite color="primary" />

@@ -3,7 +3,7 @@ import React from 'react'
 const SimilarProductCard = ({ item }: any) => {
   return (
     <div className="group cursor-pointer">
-      {/* Image */}
+
       <div className="relative aspect-[3/4] bg-gray-100 rounded-md overflow-hidden">
         <img
           src={item.images[0]}
@@ -12,7 +12,6 @@ const SimilarProductCard = ({ item }: any) => {
         />
       </div>
 
-      {/* Info */}
       <div className="mt-2 space-y-1">
         <h3 className="text-xs font-medium text-gray-700 truncate">
           {item.seller.businessDetails.businessName}
