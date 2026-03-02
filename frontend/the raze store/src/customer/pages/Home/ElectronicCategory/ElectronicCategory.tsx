@@ -5,7 +5,7 @@ const electronic=[
     {
         section:"ELECTRIC_CATEGORIES",
         name:"Laptop",
-        image:"https://www.asus.com/media/Odin/Websites/global/Series/9.png",
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSge6gmEXUKfGwsCew8Rjm4-a1i9urseN8RLg&s",
         categoryId:"laptops"
     },
     {
@@ -48,7 +48,7 @@ const electronic=[
 
 const ElectronicCategory = () => {
   return (
-    <div className="flex flex-wrap justify-between gap-4 py-4 px-4 lg:px-20 border-b">
+    <div className="flex flex-wrap justify-between gap-4 py-4 px-4 lg:px-20 border-b border-gray-300">
       {electronic.map((item) => (
         <ElectronicCategoryCard key={item.image || item.name} item={item} />
       ))}

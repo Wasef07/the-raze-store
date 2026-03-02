@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 
 const ElectronicCategoryCard = ({ item }:any) => {
+  const navigate = useNavigate();
   return (
-    <div className="flex w-20 flex-col items-center gap-1.5 cursor-pointer group">
+    <div onClick={()=>navigate(`/products/${item.categoryId}`)} className="flex w-20 flex-col items-center gap-1.5 cursor-pointer group">
       
       <img
         className="h-10 object-contain group-hover:scale-105 transition-transform"

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./ProductCard.css";
+import { useNavigate } from "react-router";
 
 const ProductCard = ({ item }: any) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const navigate =  useNavigate();
   const mainImage = item.images?.[1];
 
   return (
-    <div className="group px-4">
+    <div onClick={()=>navigate(`/product-details/${1}/${"Women Saree"}/${2}`)} className="group px-4">
       <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
