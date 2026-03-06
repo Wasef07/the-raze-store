@@ -9,19 +9,26 @@ import Checkout from "./customer/pages/Checkout/Checkout.tsx";
 import Navbar from "./customer/Navbar/Navbar.tsx";
 import Profile from "./customer/pages/Order/Profile.tsx";
 import { Route, Routes } from "react-router";
+import SellerDashboard from "./seller/SellerDashboard/SellerDashboard.tsx";
 
 function App() {
   return (
     <ThemeProvider theme={customerTheme}>
-      <Navbar />
+      {/* <Navbar /> */}
       {/* <Home/> */}
       {/* <Products/> */}
       {/* <ProductDetails/> */}
       {/* <Cart/> */}
       {/* <Checkout /> */}
       {/* <Profile /> */}
-      
       <Routes>
+        <Route path="/seller/*" element={<SellerDashboard/>}></Route>
+      </Routes>
+      {/* <SellerDashboard/> */}
+
+
+
+      {/* <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products/:categoryId" element={<Products />} />
         <Route
@@ -31,7 +38,7 @@ function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/checkout/address" element={<Checkout/>}/>
         <Route path="/account/*" element={<Profile/>}/>
-      </Routes>
+      </Routes> */}
       <Footer />
     </ThemeProvider>
   );
