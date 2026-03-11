@@ -10,11 +10,15 @@ import Navbar from "./customer/Navbar/Navbar.tsx";
 import Profile from "./customer/pages/Order/Profile.tsx";
 import { Route, Routes } from "react-router";
 import SellerDashboard from "./seller/SellerDashboard/SellerDashboard.tsx";
+import BecomeSeller from "./auth/BecomeSeller/BecomeSeller.tsx";
+import CustomerRoutes from "./Routes/CustomerRoutes.tsx";
+import Auth from "./auth/Login/Auth";
+import Dashboard from "./admin/Dashboard/Dashboard.tsx";
 
 function App() {
   return (
     <ThemeProvider theme={customerTheme}>
-      {/* <Navbar /> */}
+      
       {/* <Home/> */}
       {/* <Products/> */}
       {/* <ProductDetails/> */}
@@ -22,12 +26,16 @@ function App() {
       {/* <Checkout /> */}
       {/* <Profile /> */}
       <Routes>
-        <Route path="/seller/*" element={<SellerDashboard/>}></Route>
+        <Route path="/become-seller" element={<BecomeSeller/>}/>
+        <Route path="/seller/*" element={<SellerDashboard/>}/>
+        <Route path="/admin/*" element={<Dashboard/>}/>
+        <Route path="/login" element={<Auth/>}/>
+        <Route path="/*" element={<CustomerRoutes/>}/>
       </Routes>
       {/* <SellerDashboard/> */}
 
 
-
+      {/* <Navbar /> */}
       {/* <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products/:categoryId" element={<Products />} />
@@ -39,7 +47,7 @@ function App() {
         <Route path="/checkout/address" element={<Checkout/>}/>
         <Route path="/account/*" element={<Profile/>}/>
       </Routes> */}
-      <Footer />
+      {/* <Footer /> */}
     </ThemeProvider>
   );
 }

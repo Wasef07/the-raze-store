@@ -60,7 +60,7 @@ const Navbar = () => {
           <IconButton>
             <Search sx={{ fontSize: 29 }} />
           </IconButton>
-          {true ? (
+          {false ? (
             <Button onClick={()=>navigate("/account")} className='flex items-center gap-2'>
               <Avatar
                 src="https://pixabay.com/images/download/uschi2807-british-shorthair-7965411_1920.jpg"
@@ -69,7 +69,7 @@ const Navbar = () => {
               <h1>Raze</h1>
             </Button>
           ) : (
-            <Button variant="contained" startIcon={<AccountCircle />}>
+            <Button onClick={()=>navigate("/login")} variant="contained" startIcon={<AccountCircle />}>
               Login
             </Button>
           )}
@@ -79,7 +79,7 @@ const Navbar = () => {
           <IconButton onClick={()=>navigate("/cart")}>
             <AddShoppingCart sx={{ fontSize: 29 }} />
           </IconButton>
-          <Button variant="outlined" startIcon={<Storefront />}>
+          <Button onClick={()=>navigate("/become-seller")} variant="outlined" startIcon={<Storefront />}>
             Become Seller
           </Button>
         </div>

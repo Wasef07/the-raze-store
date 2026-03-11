@@ -6,7 +6,7 @@ import SellerRoutes from "../../Routes/SellerRoutes";
 const SellerDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar DrawerList={SellerDrawerList} />
+      <Navbar DrawerList={SellerDrawerList} panelName="Seller Panel"/>
 
       <section className="lg:flex min-h-[calc(100vh-64px)]">
         
