@@ -19,8 +19,10 @@ import {
   Storefront,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../../Redux ToolKit/Store";
 
 const Navbar = () => {
+  const user = useAppSelector(store=>store.user)
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const [showSheet, setShowSheet] = useState(false);
@@ -60,13 +62,13 @@ const Navbar = () => {
           <IconButton>
             <Search sx={{ fontSize: 29 }} />
           </IconButton>
-          {false ? (
+          {user.user?.name ? (
             <Button onClick={()=>navigate("/account")} className='flex items-center gap-2'>
               <Avatar
                 src="https://pixabay.com/images/download/uschi2807-british-shorthair-7965411_1920.jpg"
                 sx={{ width: 29, height: 29 }}
               />
-              <h1>Raze</h1>
+              <h1>{user.user?.name}</h1>
             </Button>
           ) : (
             <Button onClick={()=>navigate("/login")} variant="contained" startIcon={<AccountCircle />}>

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
-import { Button } from "@mui/material";
+import { Button, Snackbar } from "@mui/material";
 import authBanner from "../../assets/images/auth_card.png";
+import { useAppSelector } from "../../Redux ToolKit/Store";
+
 
 const Auth = () => {
+  const auth=useAppSelector(store=>store.auth)
   const [isLogin, setIsLogin] = useState(false);
 
   return (
     <div className="flex justify-center items-center min-h-[90vh] px-4">
-
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
-
         <img
           className="w-full h-40 object-cover"
           src={authBanner}
@@ -22,24 +23,21 @@ const Auth = () => {
           {isLogin ? <LoginForm /> : <SignupForm />}
 
           <div className="flex items-center justify-center gap-2 pb-6 text-sm">
-
             <p className="text-gray-600">
-              {isLogin
-                ? "Don't have an account?"
-                : "Already have an account?"}
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
             </p>
 
-            <Button
-              size="small"
-              onClick={() => setIsLogin(!isLogin)}
-            >
+            <Button size="small" onClick={() => setIsLogin(!isLogin)}>
               {isLogin ? "Signup" : "Login"}
             </Button>
-
           </div>
         </div>
-
       </div>
+      <Snackbar
+        open={auth.otpSent}
+        autoHideDuration={6000}
+        message="OTP Sent Successfully"
+      />
     </div>
   );
 };

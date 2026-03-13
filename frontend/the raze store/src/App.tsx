@@ -14,8 +14,21 @@ import BecomeSeller from "./auth/BecomeSeller/BecomeSeller.tsx";
 import CustomerRoutes from "./Routes/CustomerRoutes.tsx";
 import Auth from "./auth/Login/Auth";
 import Dashboard from "./admin/Dashboard/Dashboard.tsx";
+import { useAppDispatch, useAppSelector } from "./Redux ToolKit/Store.ts";
+import { useEffect } from "react";
+import { fetchUserProfile } from "./Redux ToolKit/Features/Customer/UserSlice.ts";
 
 function App() {
+  const dispatch=useAppDispatch();
+  const auth=useAppSelector(store=>store.auth)
+
+  useEffect(()=>{
+    const jwt=localStorage.getItem("jwt")
+
+    if(jwt || auth.jwt){
+      dispatch(fetchUserProfile(jwt))
+    }
+  },[auth.jwt])
   return (
     <ThemeProvider theme={customerTheme}>
       

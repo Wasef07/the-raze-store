@@ -1,17 +1,27 @@
 import { Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import { sendLogicSignupOTP, signin } from "../../Redux ToolKit/Features/Auth/AuthSlice";
+import { useNavigate } from "react-router";
 
 const LoginForm = () => {
+  const auth=useAppSelector(store=>store.auth)
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
       otp: "",
     },
     onSubmit: (values) => {
+      dispatch(signin({ ...values, navigate }));
       console.log(values);
     },
   });
+    const handleSentOtp=()=>{
+      dispatch(sendLogicSignupOTP({email:formik.values.email}))
+    }
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-6 px-6 pb-6">
@@ -32,7 +42,7 @@ const LoginForm = () => {
         />
       </div>
 
-      <div>
+      {auth.otpSent && <div>
         <TextField
           fullWidth
           name="otp"
@@ -43,13 +53,14 @@ const LoginForm = () => {
           error={formik.touched.otp && Boolean(formik.errors.otp)}
           helperText={formik.touched.otp && formik.errors.otp}
         />
-      </div>
+      </div>}
 
       <Button
         fullWidth
         sx={{ py: "12px", mt: 1 }}
         type="submit"
         variant="contained"
+        onClick={auth.otpSent?formik.handleSubmit:handleSentOtp}
       >
         Login
       </Button>

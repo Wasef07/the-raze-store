@@ -4,6 +4,8 @@ import Order from "./Order";
 import OrderDetail from "./OrderDetail";
 import { Route, Routes, useNavigate } from "react-router";
 import UserDetail from "../Account/UserDetail";
+import { performLogout } from "../../../Redux ToolKit/Features/Auth/AuthSlice";
+import { useAppDispatch } from "../../../Redux ToolKit/Store";
 
 const menu = [
   { name: "Orders", path: "/account/orders" },
@@ -14,7 +16,16 @@ const menu = [
 ];
 
 const Profile = () => {
+  const dispatch=useAppDispatch();
   const navigate = useNavigate();
+  const handleClick=(item:any)=>{
+    if(item.name==="Logout")handleLogout();
+    navigate(item.path)
+  }
+
+  const handleLogout = ()=>{
+    dispatch(performLogout());
+  }
   return (
     <div className="px-4 lg:px-32 min-h-screen mt-10">
       {/* Header */}
@@ -27,7 +38,7 @@ const Profile = () => {
         <div className="lg:col-span-1 bg-white  rounded-lg p-4 space-y-2 h-fit">
           {menu.map((item) => (
             <div
-              onClick={()=>navigate(item.path)}
+              onClick={()=>handleClick(item)}
               key={item.path}
               className="px-4 py-2 rounded-md text-sm cursor-pointer
               hover:bg-teal-500 hover:text-white transition"
