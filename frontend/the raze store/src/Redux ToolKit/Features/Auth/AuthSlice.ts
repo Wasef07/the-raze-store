@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../../config/api";
 import { resetUserState } from "../Customer/UserSlice";
+import { resetSellerAuthState } from "../Seller/SellerAuthentication";
 
 const API_URL = "/auth";
 
@@ -15,16 +16,15 @@ const initialState = {
 export const sendLogicSignupOTP = createAsyncThunk(
   "/auth/sendLogicSignupOTP",
   async ({ email }: { email: string }) => {
-    try{
-const response = await api.post(`${API_URL}/send/login-signup-otp`, {
-      email,
-    });
-     console.log("Response:", response.data);
-    return response.data;
-    }catch (error: any) {
+    try {
+      const response = await api.post(`${API_URL}/send/login-signup-otp`, {
+        email,
+      });
+      console.log("Response:", response.data);
+      return response.data;
+    } catch (error: any) {
       console.log("Error:", error.response?.data);
     }
-    
   },
 );
 
@@ -87,11 +87,12 @@ const authSlice = createSlice({
   },
 });
 
-export const {logout}=authSlice.actions;
-export const performLogout=()=>async(dispatch:any)=>{
-  dispatch(logout())
+export const { logout } = authSlice.actions;
+export const performLogout = () => async (dispatch: any) => {
+  dispatch(logout());
   dispatch(resetUserState());
+  dispatch(resetSellerAuthState())
   localStorage.removeItem("jwt");
-}
+};
 
 export default authSlice.reducer;
