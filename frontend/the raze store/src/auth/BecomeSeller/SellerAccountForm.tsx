@@ -5,8 +5,12 @@ import BecomeSellerStep1 from "./BecomeSellerStep1";
 import BecomeSellerStep2 from "./BecomeSellerStep2";
 import BecomeSellerStep3 from "./BecomeSellerStep3";
 import BecomeSellerStep4 from "./BecomeSellerStep4";
+import { useAppDispatch } from "../../Redux ToolKit/Store";
+import { createSeller } from "../../Redux ToolKit/Features/Seller/SellerAuthentication";
 
 const SellerAccountForm = () => {
+
+  const dispatch = useAppDispatch();
   const steps = [
     "Tax Details & Mobile",
     "Pickup Address",
@@ -45,6 +49,7 @@ const SellerAccountForm = () => {
       },
     },
     onSubmit: (values) => {
+      dispatch(createSeller(values))
       console.log(values);
     },
   });

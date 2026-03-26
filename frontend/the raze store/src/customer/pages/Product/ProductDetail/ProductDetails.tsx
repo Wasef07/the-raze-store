@@ -10,8 +10,11 @@ import {
   WorkspacePremium,
 } from "@mui/icons-material";
 import { Button, Divider } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SimilarProduct from "./SimilarProduct";
+import { useAppDispatch, useAppSelector } from "../../../../Redux ToolKit/Store";
+import { fetchProductById } from "../../../../Redux ToolKit/Features/Customer/ProductSlice";
+import { useParams } from "react-router";
 const images = [
   "https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780",
   "https://lajreedesigner.com/cdn/shop/files/KP-6026_4.jpg?v=1745490955&width=1780",
@@ -23,6 +26,12 @@ const images = [
 const ProductDetails = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const dispatch=useAppDispatch();
+  const product = useAppSelector(store=>store.product)
+  const {productId,categoryId} = useParams()
+  useEffect(()=>{
+    dispatch(fetchProductById(productId))
+  },[dispatch])
   const handleChangeCurrentImage = (index: number) => setCurrentImage(index);
   const handleQuantityChange = (value: number) => setQuantity(value + quantity);
   return (
@@ -30,7 +39,7 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <section className="flex flex-col lg:flex-row gap-5">
           <div className="w-full lg:w-[14%] flex flex-row lg:flex-col gap-3">
-            {images.map((item, index) => (
+            {product.product?.image.map((item, index) => (
               <img
                 onClick={() => handleChangeCurrentImage(index)}
                 className={`lg:w-full w-[56px] cursor-pointer rounded-md border 
@@ -42,7 +51,7 @@ const ProductDetails = () => {
           </div>
           <div className="w-full lg:w-[85%]">
             <img
-              src={images[currentImage]}
+              src={product.product?.image[currentImage]}
               className="w-full rounded-lg object-cover"
               alt=""
             />
@@ -54,7 +63,7 @@ const ProductDetails = () => {
           </h2>
 
           <h1 className="mt-1 text-xl font-semibold text-gray-900 leading-snug">
-            Extraordinary Yellow Soft Silk Saree With Glowing Blouse Piece
+            {product.product?.title}
           </h1>
           <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 border rounded-md text-sm">
             <Star fontSize="small" className="text-yellow-500" />
@@ -64,11 +73,11 @@ const ProductDetails = () => {
           <div className="mt-5 space-y-1">
             <div className="flex items-center gap-3">
               <span className="text-2xl font-semibold text-gray-900">
-                ₹1,499
+                ₹{product.product?.sellingPrice}
               </span>
-              <span className="text-sm text-gray-400 line-through">₹2,299</span>
+              <span className="text-sm text-gray-400 line-through">₹{product.product?.mrpPrice}</span>
               <span className="text-sm font-medium text-green-600">
-                38% OFF
+                {product.product?.discountPercent}% OFF
               </span>
             </div>
 
@@ -138,10 +147,7 @@ const ProductDetails = () => {
             </Button>
           </div>
           <p className="mt-6 text-sm text-gray-600 leading-relaxed">
-            Enhance your elegance with our Extraordinary Yellow Soft Silk Saree.
-            This exquisite piece is perfect for special occasions, featuring a
-            glowing blouse piece that adds sophistication. Crafted from premium
-            silk, it offers comfort and timeless charm.
+            {product.product?.description}
           </p>
         </section>
       </div>

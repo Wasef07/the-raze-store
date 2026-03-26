@@ -10,7 +10,7 @@ const BecomeSellerStep4 = ({ formik }: any) => {
           <TextField
             fullWidth
             name="businessDetails.businessName"
-            label="Account Number"
+            label="Business Name"
             value={formik.values.businessDetails.businessName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

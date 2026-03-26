@@ -1,27 +1,40 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../../config/api";
 
-export const createHomeCategories = createAsyncThunk(
+export const createHomeCategories = createAsyncThunk<any, any>(
   "home/createHomeCategories",
-  async (homeCategories: any, { rejectWithValue }) => {
+  async (homeCategories, { rejectWithValue }) => {
     try {
       const response = await api.post("/home/categories", homeCategories);
 
       console.log("Home Categories:", response.data);
 
       return response.data;
-
     } catch (error: any) {
-
       console.log("Create Home Categories Error:", error.response?.data);
 
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create home categories"
+        error.response?.data?.message || "Failed to create home categories",
       );
     }
-  }
+  },
 );
+export const fetchHomeCategories = createAsyncThunk<any, void>(
+  "home/fetchHomeCategories",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/home/home-category"); // ✅ CORRECT API
 
+      console.log("FETCH HOME:", response.data);
+
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch home categories",
+      );
+    }
+  },
+);
 const initialState = {
   homeCategories: [],
   loading: false,
@@ -33,7 +46,6 @@ const homeCategorySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-
     builder.addCase(createHomeCategories.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -48,7 +60,20 @@ const homeCategorySlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
+    builder.addCase(fetchHomeCategories.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
 
+    builder.addCase(fetchHomeCategories.fulfilled, (state, action) => {
+      state.loading = false;
+      state.homeCategories = action.payload; // ✅ now will have grid/shop/etc
+    });
+
+    builder.addCase(fetchHomeCategories.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   },
 });
 

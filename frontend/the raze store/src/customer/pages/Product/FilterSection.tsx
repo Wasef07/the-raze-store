@@ -16,7 +16,7 @@ const FilterSection = () => {
   const [expandColor, setExpandColor] = useState(false);
 
   return (
-    <div className="bg-white rounded-md border space-y-4">
+    <div className="-z-10 bg-white rounded-md border space-y-4">
 
       <div className="flex items-center justify-between px-3 py-2 border-b">
         <p className="text-base font-semibold text-gray-800">Filters</p>

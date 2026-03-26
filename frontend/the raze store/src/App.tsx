@@ -17,21 +17,28 @@ import Dashboard from "./admin/Dashboard/Dashboard.tsx";
 import { useAppDispatch, useAppSelector } from "./Redux ToolKit/Store.ts";
 import { useEffect } from "react";
 import { fetchUserProfile } from "./Redux ToolKit/Features/Customer/UserSlice.ts";
+import { fetchSellerProfile } from "./Redux ToolKit/Features/Seller/SellerSlice.ts";
+import { createHomeCategories, fetchHomeCategories } from "./Redux ToolKit/Features/Customer/HomeCtaegorySlice.ts";
+import { homeCategories } from "./data/homeCategories.ts";
 
 function App() {
-  const dispatch=useAppDispatch();
-  const auth=useAppSelector(store=>store.auth)
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector((store) => store.auth);
 
-  useEffect(()=>{
-    const jwt=localStorage.getItem("jwt")
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
 
-    if(jwt || auth.jwt){
-      dispatch(fetchUserProfile(jwt))
+    if (jwt || auth.jwt) {
+      dispatch(fetchUserProfile(jwt));
+      dispatch(fetchSellerProfile(jwt));
     }
-  },[auth.jwt])
+  }, [auth.jwt]);
+  useEffect(() => {
+    dispatch(fetchHomeCategories());
+  }, []);
+  
   return (
     <ThemeProvider theme={customerTheme}>
-      
       {/* <Home/> */}
       {/* <Products/> */}
       {/* <ProductDetails/> */}
@@ -39,14 +46,13 @@ function App() {
       {/* <Checkout /> */}
       {/* <Profile /> */}
       <Routes>
-        <Route path="/become-seller" element={<BecomeSeller/>}/>
-        <Route path="/seller/*" element={<SellerDashboard/>}/>
-        <Route path="/admin/*" element={<Dashboard/>}/>
-        <Route path="/login" element={<Auth/>}/>
-        <Route path="/*" element={<CustomerRoutes/>}/>
+        <Route path="/become-seller" element={<BecomeSeller />} />
+        <Route path="/seller/*" element={<SellerDashboard />} />
+        <Route path="/admin/*" element={<Dashboard />} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/*" element={<CustomerRoutes />} />
       </Routes>
       {/* <SellerDashboard/> */}
-
 
       {/* <Navbar /> */}
       {/* <Routes>

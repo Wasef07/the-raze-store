@@ -1,5 +1,4 @@
 import {configureStore,combineReducers} from "@reduxjs/toolkit"
-import { thunk } from "redux-thunk"
 import {useDispatch, useSelector, type TypedUseSelectorHook} from "react-redux"
 import authReducer from "./Features/Auth/AuthSlice"
 import userReducer from "./Features/Customer/UserSlice"

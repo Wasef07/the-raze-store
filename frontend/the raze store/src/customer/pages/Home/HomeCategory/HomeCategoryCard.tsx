@@ -1,4 +1,4 @@
-const HomeCategoryCard = () => {
+const HomeCategoryCard = ({item}:any) => {
   return (
     <div className="flex flex-col items-center gap-2 cursor-pointer group">
       
@@ -17,13 +17,13 @@ const HomeCategoryCard = () => {
             transition-transform duration-300
             group-hover:scale-105
           "
-          src="https://ikiru.in/cdn/shop/files/uCTGlyQu0dcroSIZsAV_92E32zUA6pgKUvkVLdXHd9A.webp?v=1763923747&width=1182"
+          src={item.image}
           alt="Lamps and Lighting"
         />
       </div>
 
       <h1 className="text-sm font-medium text-center text-gray-800">
-        Lamps & Lighting
+        {item.name}
       </h1>
     </div>
   )

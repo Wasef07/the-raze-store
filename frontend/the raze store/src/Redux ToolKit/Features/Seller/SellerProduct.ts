@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../../config/api";
 
-const API_URL = "/api/sellers/product";
+const API_URL = "/api/sellers/products";
 
 export const fetchSellerProduct = createAsyncThunk<any, any>(
   "/sellerProduct/fetchSellerProduct",

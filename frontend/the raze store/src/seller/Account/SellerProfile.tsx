@@ -2,8 +2,10 @@ import { Edit } from "@mui/icons-material";
 import { Avatar, Button, Divider } from "@mui/material";
 import React from "react";
 import ProfileFillCard from "../../customer/pages/Account/ProfileFillCard";
+import { useAppSelector } from "../../Redux ToolKit/Store";
 
 const SellerProfile = () => {
+  const {seller}=useAppSelector(store=>store)
   return (
     <div className="lg:px-20 px-4 pt-6 pb-20 space-y-16">
 
@@ -28,11 +30,11 @@ const SellerProfile = () => {
           />
 
           <div className="w-full space-y-2">
-            <ProfileFillCard keys={"Seller Name"} value={"Pablo Pandey"} />
+            <ProfileFillCard keys={"Seller Name"} value={seller.profile?.name} />
             <Divider />
-            <ProfileFillCard keys={"Seller Email"} value={"pablo@gmail.com"} />
+            <ProfileFillCard keys={"Seller Email"} value={seller.profile?.email} />
             <Divider />
-            <ProfileFillCard keys={"Seller Mobile"} value={"1234567899"} />
+            <ProfileFillCard keys={"Seller Mobile"} value={seller.profile?.mobile} />
           </div>
 
         </div>
@@ -52,11 +54,11 @@ const SellerProfile = () => {
         </div>
 
         <div className="space-y-2">
-          <ProfileFillCard keys={"Business Name"} value={"Pablo Clothing"} />
+          <ProfileFillCard keys={"Business Name"} value={seller.profile?.businessDetails?.businessName} />
           <Divider />
-          <ProfileFillCard keys={"GSTIN"} value={"GSTIN876"} />
+          <ProfileFillCard keys={"GSTIN"} value={seller.profile?.GSTIN} />
           <Divider />
-          <ProfileFillCard keys={"Account Status"} value={"Pending_Verification"} />
+          <ProfileFillCard keys={"Account Status"} value={seller.profile?.accountStatus} />
         </div>
 
       </div>
@@ -75,13 +77,13 @@ const SellerProfile = () => {
         </div>
 
         <div className="space-y-2">
-          <ProfileFillCard keys={"Address"} value={"RAZE HOUSE"} />
+          <ProfileFillCard keys={"Address"} value={seller.profile?.pickupAddress?.address} />
           <Divider />
-          <ProfileFillCard keys={"City"} value={"Kolkata"} />
+          <ProfileFillCard keys={"City"} value={seller.profile?.pickupAddress?.locality} />
           <Divider />
-          <ProfileFillCard keys={"State"} value={"West Bengal"} />
+          <ProfileFillCard keys={"State"} value={seller.profile?.pickupAddress?.state} />
           <Divider />
-          <ProfileFillCard keys={"Mobile No."} value={"12345678"} />
+          <ProfileFillCard keys={"Mobile No."} value={seller.profile?.pickupAddress?.mobile} />
         </div>
 
       </div>

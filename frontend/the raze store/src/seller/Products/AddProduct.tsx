@@ -25,10 +25,13 @@ import { menLevelThree } from "../../data/Category/LevelThree/menLevelThree";
 import { womenLevelThree } from "../../data/Category/LevelThree/womenLevelThree";
 import { furnitureLevelThree } from "../../data/Category/LevelThree/furnitureLevelThree";
 import { electronicLevelThree } from "../../data/Category/LevelThree/electronicLevelThree";
+import { uploadToCloudnary } from "../../util/uploadToCloudnary";
+import { useAppDispatch } from "../../Redux ToolKit/Store";
+import { createProduct } from "../../Redux ToolKit/Features/Seller/SellerProduct";
 
 const AddProduct = () => {
   const [uploadImage, setUploadImage] = useState(false);
-
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -37,24 +40,57 @@ const AddProduct = () => {
       sellingPrice: "",
       quantity: "",
       color: "",
-      images: [
-        "https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780",
-      ],
+      images: [],
       category: "",
       category2: "",
       category3: "",
       sizes: "",
     },
-    onSubmit: (value) => {
-      console.log(value);
-    },
-  });
+    onSubmit: (values) => {
+  const jwt = localStorage.getItem("jwt");
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
-    console.log(file);
+  const request = {
+    title: values.title,
+    description: values.description,
+
+    mrpPrice: Number(values.mrpPrice),
+    sellingPrice: Number(values.sellingPrice),
+    quantity: Number(values.quantity),
+
+    discountPercent: Math.round(
+      ((Number(values.mrpPrice) - Number(values.sellingPrice)) /
+        Number(values.mrpPrice)) *
+        100
+    ),
+
+    color: [values.color],
+    size: [values.sizes],
+    image: values.images,
+
+    category: values.category3, // IMPORTANT (use final category)
   };
 
+  console.log("FINAL REQUEST:", request);
+
+  dispatch(createProduct({ jwt, request }));
+}
+  });
+
+  const handleImageChange = async (event: any) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setUploadImage(true);
+
+    const image = await uploadToCloudnary(file);
+
+    if (image) {
+      formik.setFieldValue("images", [...formik.values.images, image]);
+    }
+
+    setUploadImage(false);
+    console.log("Handle Image Change");
+  };
   const handleRemoveImage = () => {
     console.log("Handle Remove Image");
   };
@@ -87,16 +123,12 @@ const AddProduct = () => {
 
   return (
     <div className="p-6 lg:p-10 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-10">
-        Add Product
-      </h1>
+      <h1 className="text-3xl font-bold text-center mb-10">Add Product</h1>
 
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={4}>
-
           {/* IMAGE SECTION */}
           <Grid className="flex flex-wrap gap-4 items-center" size={{ xs: 12 }}>
-
             <input
               type="file"
               accept="image/*"
@@ -106,7 +138,6 @@ const AddProduct = () => {
             />
 
             <label htmlFor="fileInput" className="relative">
-
               <span className="w-24 h-24 cursor-pointer flex items-center justify-center border rounded-md border-gray-300 hover:border-gray-500 transition">
                 <AddPhotoAlternate className="text-gray-700" />
               </span>
@@ -116,7 +147,6 @@ const AddProduct = () => {
                   <CircularProgress size={24} />
                 </div>
               )}
-
             </label>
 
             <div className="flex flex-wrap gap-3">
@@ -144,7 +174,6 @@ const AddProduct = () => {
                 </div>
               ))}
             </div>
-
           </Grid>
 
           {/* TITLE */}
@@ -179,8 +208,9 @@ const AddProduct = () => {
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <TextField
               fullWidth
-              id="mrp_price"
+              id="mrpPrice"
               name="mrpPrice"
+              type="number"
               label="MRP Price"
               value={formik.values.mrpPrice}
               onChange={formik.handleChange}
@@ -191,9 +221,10 @@ const AddProduct = () => {
           <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <TextField
               fullWidth
-              id="selling_price"
+              id="sellingPrice"
               name="sellingPrice"
               label="Selling Price"
+              type="number"
               value={formik.values.sellingPrice}
               onChange={formik.handleChange}
               required
@@ -250,8 +281,21 @@ const AddProduct = () => {
             </FormControl>
           </Grid>
 
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+            <TextField
+              fullWidth
+              id="quantity"
+              name="quantity"
+              label="Quantity"
+              type="number"
+              value={formik.values.quantity}
+              onChange={formik.handleChange}
+              required
+            />
+          </Grid>
+
           {/* MAIN CATEGORY */}
-          <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <FormControl fullWidth required>
               <InputLabel id="category-label">Main Category</InputLabel>
 
@@ -274,11 +318,9 @@ const AddProduct = () => {
           </Grid>
 
           {/* SECOND CATEGORY */}
-          <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <FormControl fullWidth required>
-              <InputLabel id="category2-label">
-                Second Category
-              </InputLabel>
+              <InputLabel id="category2-label">Second Category</InputLabel>
 
               <Select
                 name="category2"
@@ -299,11 +341,9 @@ const AddProduct = () => {
           </Grid>
 
           {/* THIRD CATEGORY */}
-          <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
             <FormControl fullWidth required>
-              <InputLabel id="category3-label">
-                Third Category
-              </InputLabel>
+              <InputLabel id="category3-label">Third Category</InputLabel>
 
               <Select
                 id="category3"
@@ -339,7 +379,6 @@ const AddProduct = () => {
               Add Product
             </Button>
           </Grid>
-
         </Grid>
       </form>
     </div>

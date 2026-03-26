@@ -87,7 +87,7 @@ export const fetchSellerById = createAsyncThunk<any, any>(
 export const updateSelleAccountStatus = createAsyncThunk<any, any>(
   "sellers/updateSelleAccountStatus",
   async (
-    { id: any, status: any }: { id: number; status: string },
+    { id, status}: { id: number; status: string },
     { rejectWithValue },
   ) => {
     try {

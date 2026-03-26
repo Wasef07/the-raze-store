@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, IconButton } from "@mui/material";
 import { Edit } from "@mui/icons-material";
+import { useAppSelector } from "../../Redux ToolKit/Store";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,36 +49,37 @@ const rows = [
 ];
 
 export default function ProductTable() {
+  const {sellerProduct}=useAppSelector(store=>store)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Images</StyledTableCell>
-            <StyledTableCell align="right">Title</StyledTableCell>
-            <StyledTableCell align="right">Mrp Price</StyledTableCell>
-            <StyledTableCell align="right">Selling Price</StyledTableCell>
-            <StyledTableCell align="right">Update Stock</StyledTableCell>
-            <StyledTableCell align="right">Update</StyledTableCell>
+            <StyledTableCell align="center">Title</StyledTableCell>
+            <StyledTableCell align="center">Mrp Price</StyledTableCell>
+            <StyledTableCell align="center">Selling Price</StyledTableCell>
+            <StyledTableCell align="center">Update Stock</StyledTableCell>
+            <StyledTableCell align="center">Update</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {sellerProduct.products.map((item) => (
+            <StyledTableRow key={item.id}>
               <StyledTableCell component="th" scope="row">
                 <div className="flex gap-1 flex-wrap">
-                    {[1,1,1,1].map((item,index)=><img key={index}className="w-20 rounded-md" src="https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780"/>)}
+                    {item.image?.map((img,index)=><img key={index}className="w-20 rounded-md" src={img}/>)}
                 </div>
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell align="left">{item.title}</StyledTableCell>
+              <StyledTableCell align="left">₹{item.mrpPrice}</StyledTableCell>
+              <StyledTableCell align="left">₹{item.sellingPrice}</StyledTableCell>
+              <StyledTableCell align="left">
                 <Button size="small">
                     in_stock
                 </Button>
               </StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell align="left">
                 <IconButton color="primary" className="bg-[teal]">
                   <Edit />
                 </IconButton>
