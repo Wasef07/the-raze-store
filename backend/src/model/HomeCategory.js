@@ -10,8 +10,8 @@ const homeCategorySchema =  new mongoose.Schema({
         required:true
     },
     categoryId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Category",
+        type:String,
+        
         required:true
     },
     section:{

@@ -1,9 +1,9 @@
 import Product from "../model/Product.js";
 import Category from "../model/Category.js";
 import calculateDiscountPercentage from "../util/calculateDiscountPercent.js";
+import mongoose from "mongoose";
 
 class ProductService {
-
   async createProduct(data, seller) {
     const {
       title,
@@ -19,10 +19,7 @@ class ProductService {
       category3,
     } = data;
 
-    const discountPercent = calculateDiscountPercentage(
-      mrpPrice,
-      sellingPrice
-    );
+    const discountPercent = calculateDiscountPercentage(mrpPrice, sellingPrice);
 
     const cat1 = await this.createOrGetCategory(category, 1);
 
@@ -43,8 +40,8 @@ class ProductService {
       sellingPrice,
       discountPercent,
       quantity,
-      color, 
-      size,  
+      color,
+      size,
       seller: seller._id,
       category: finalCategory._id,
     });
@@ -73,13 +70,10 @@ class ProductService {
   }
 
   async updateProduct(productId, updateData) {
-    return await Product.findByIdAndUpdate(
-      productId,
-      updateData,
-      { new: true }
-    );
+    return await Product.findByIdAndUpdate(productId, updateData, {
+      new: true,
+    });
   }
-
 
   async findProductById(productId) {
     const product = await Product.findById(productId).populate("category");
@@ -95,14 +89,48 @@ class ProductService {
     });
   }
 
-
   async getProductsBySeller(sellerId) {
     return await Product.find({ seller: sellerId });
   }
 
+  async getAllProducts(query) {
+    const { categoryId, pageNumber = 0, pageSize = 10, sort } = query;
 
-  async getAllProducts() {
-    return await Product.find().populate("category");
+    let filter = {};
+
+    // ✅ FIXED LOGIC
+    if (categoryId) {
+      const category = await Category.findOne({ categoryId });
+
+      if (category) {
+        filter.category = category._id; // correct ObjectId
+      } else {
+        return {
+          content: [],
+          totalElements: 0,
+          totalPages: 0,
+        };
+      }
+    }
+
+    let sortOption = {};
+    if (sort === "price_low") sortOption.sellingPrice = 1;
+    if (sort === "price_high") sortOption.sellingPrice = -1;
+
+    const totalElements = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
+      .populate("category")
+      .populate("seller")
+      .sort(sortOption)
+      .skip(pageNumber * pageSize)
+      .limit(Number(pageSize));
+
+    return {
+      content: products,
+      totalElements,
+      totalPages: Math.ceil(totalElements / pageSize),
+    };
   }
 }
 

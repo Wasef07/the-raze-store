@@ -3,7 +3,6 @@ import CartItem from "../model/CartItem.js";
 import calculateDiscountPercentage from "../util/calculateDiscountPercent.js";
 
 class CartService {
-
   async findUserCart(user) {
     let cart = await Cart.findOne({ user: user._id });
 
@@ -11,12 +10,14 @@ class CartService {
       cart = await Cart.create({ user: user._id, cartItems: [] });
     }
 
-    const cartItems = await CartItem.find({ cart: cart._id }).populate("product");
+    const cartItems = await CartItem.find({ cart: cart._id }).populate(
+      "product",
+    );
 
     let totalMrp = 0;
     let totalSelling = 0;
 
-    cartItems.forEach(item => {
+    cartItems.forEach((item) => {
       totalMrp += item.mrpPrice;
       totalSelling += item.sellingPrice;
     });
@@ -50,7 +51,9 @@ class CartService {
         cart: cart._id,
       });
 
-      return await cartItem.save();
+      const savedItem = await cartItem.save();
+
+      return await CartItem.findById(savedItem._id).populate("product");
     }
 
     return isPresent;

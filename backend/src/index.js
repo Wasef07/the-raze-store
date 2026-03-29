@@ -1,7 +1,7 @@
 import express from "express";
 import connectDB from "./db/db.js";
 import dotenv from "dotenv";
-
+import cors from "cors";
 import adminRoutes from "./routes/AdminRoutes.js";
 import sellerRoutes from "./routes/SellerRoutes.js";
 import authRoutes from "./routes/AuthRoutes.js";
@@ -23,9 +23,14 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+
+app.use(cors())
+
 app.get("/", (req, res) => {
   res.send("Welcome to The Raze Store");
 });
+
+
 
 app.use("/products", productRoutes);
 app.use("/api/sellers/products", sellerProductRoutes);
