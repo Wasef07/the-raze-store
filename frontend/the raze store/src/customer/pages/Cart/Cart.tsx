@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CartItemCard from "./CartItemCard";
 import { Favorite, LocalOffer } from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
 import PricingCard from "./PricingCard";
+import { useAppDispatch, useAppSelector } from "../../../Redux ToolKit/Store";
+import { fetchCart } from "../../../Redux ToolKit/Features/Customer/CartSlice";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router";
 
 const Cart = () => {
+  const dispatch=useAppDispatch();
+  const navigate=useNavigate();
+  const cart = useAppSelector(store=>store.cart)
+  useEffect(()=>{
+    dispatch(fetchCart(localStorage.getItem("jwt")));
+  },[])
   return (
     <div className="pt-10 px-4 sm:px-8 lg:px-20 xl:px-28 min-h-screen bg-gray-50">
-      <div className="max-w-[1100px] mx-auto">
+      {cart.cart?.cartItems?.length>0 ? (<div className="max-w-[1100px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
 
           <div className="lg:col-span-2 space-y-4">
-            {[1, 1, 1, 1].map((_, index) => (
-              <CartItemCard key={index} />
+            {cart.cart?.cartItems?.map((item,index) => (
+              <CartItemCard item={item} key={`${item._id}-${index}`} />
             ))}
           </div>
 
@@ -37,7 +47,7 @@ const Cart = () => {
             <div className="border border-gray-300 rounded-lg bg-white">
               <PricingCard />
               <div className="p-4">
-                <Button fullWidth variant="contained" sx={{ py: 1.2 }}>
+                <Button onClick={()=>navigate("/checkout/address")} fullWidth variant="contained" sx={{ py: 1.2 }}>
                   BUY NOW
                 </Button>
               </div>
@@ -51,7 +61,9 @@ const Cart = () => {
 
           </div>
         </div>
-      </div>
+      </div>):(<>
+        <h1 className="text-2xl text-center font-semibold">Cart is Empty</h1>
+      </>)}
     </div>
   );
 };

@@ -49,9 +49,8 @@ export const deleteCartItem = createAsyncThunk<any, any>(
   "/cart/deleteCartItem",
   async ({ jwt, cartItemId }, { rejectWithValue }) => {
     try {
-      const response = await api.put(
+      const response = await api.delete(
         `${API_URL}/item/${cartItemId}`,
-        {},
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -69,11 +68,11 @@ export const deleteCartItem = createAsyncThunk<any, any>(
 
 export const updateCartItem = createAsyncThunk<any, any>(
   "/cart/updateCartItem",
-  async ({ jwt, cartItemId, cartItem }, { rejectWithValue }) => {
+  async ({ jwt, cartItemId, quantity }, { rejectWithValue }) => {
     try {
       const response = await api.put(
         `${API_URL}/item/${cartItemId}`,
-        cartItem,
+        {quantity},
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -143,7 +142,7 @@ const cartSlice = createSlice({
       state.loading = false;
       if (state.cart) {
         state.cart.cartItems = state.cart.cartItems.filter(
-          (item: any) => item._id !== action.payload._id,
+          (item: any) => item._id !== action.meta.arg.cartItemId,
         );
       }
     });

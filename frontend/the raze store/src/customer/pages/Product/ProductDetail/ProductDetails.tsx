@@ -15,6 +15,7 @@ import SimilarProduct from "./SimilarProduct";
 import { useAppDispatch, useAppSelector } from "../../../../Redux ToolKit/Store";
 import { fetchProductById } from "../../../../Redux ToolKit/Features/Customer/ProductSlice";
 import { useParams } from "react-router";
+import { addItemToCart } from "../../../../Redux ToolKit/Features/Customer/CartSlice";
 const images = [
   "https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780",
   "https://lajreedesigner.com/cdn/shop/files/KP-6026_4.jpg?v=1745490955&width=1780",
@@ -34,6 +35,14 @@ const ProductDetails = () => {
   },[dispatch])
   const handleChangeCurrentImage = (index: number) => setCurrentImage(index);
   const handleQuantityChange = (value: number) => setQuantity(value + quantity);
+  const addCartItem = () =>{
+    const request={
+      productId:product.product?._id,
+      quantity:quantity,
+      size:"M",
+    }
+    dispatch(addItemToCart({jwt:localStorage.getItem("jwt"),request}))
+  }
   return (
     <div className="min-h-screen px-5 lg:px-20 pt-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -133,6 +142,7 @@ const ProductDetails = () => {
               variant="contained"
               fullWidth
               sx={{ py: "0.9rem" }}
+              onClick={addCartItem}
             >
               Add to Bag
             </Button>

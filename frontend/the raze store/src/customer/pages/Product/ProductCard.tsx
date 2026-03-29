@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./ProductCard.css";
 import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../../Redux ToolKit/Store";
 
 const ProductCard = ({ item }: any) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate =  useNavigate();
   const mainImage = item.image?.[2];
 
+  const dispatch = useAppDispatch();
+  
   return (
     <div onClick={()=>navigate(`/product-details/${item.category}/${item.title}/${item._id}`)} className="group px-4">
       <div
