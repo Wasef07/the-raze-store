@@ -8,6 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { IconButton, Typography, Box } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import { useEffect } from "react";
+import { fetchAllCoupon } from "../../Redux ToolKit/Features/Admin/CouponSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -56,6 +59,12 @@ const rows = [
 ];
 
 export default function Coupon() {
+
+  const dispatch = useAppDispatch();
+  const coupon = useAppSelector(store=>store.coupon)
+  useEffect(()=>{
+    dispatch(fetchAllCoupon(localStorage.getItem("jwt")))
+  },[])
   return (
     <TableContainer
       component={Paper}
@@ -79,7 +88,7 @@ export default function Coupon() {
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => (
+          {coupon.coupons?.map((row) => (
             <StyledTableRow key={row.name}>
               <StyledTableCell component="th" scope="row">
                 <Box>

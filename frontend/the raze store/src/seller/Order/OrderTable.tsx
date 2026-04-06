@@ -7,7 +7,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Badge, Button, Chip, Menu, MenuItem } from "@mui/material";
-import React from "react";
+import React, { use, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import {
+  fetchSellerOrders,
+  updateOrderStatus,
+} from "../../Redux ToolKit/Features/Seller/SellerOrderSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -57,19 +62,33 @@ const orderStatus = [
 ];
 
 export default function OrderTable() {
+  const [selectedOrderId, setSelectedOrderId] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event, orderId) => {
     setAnchorEl(event.currentTarget);
+    setSelectedOrderId(orderId);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setSelectedOrderId(null);
+  };
+  const dispatch = useAppDispatch();
+  const { orders } = useAppSelector((store) => store.sellerOrder);
+  const handleUpdateOrder = (id: any, status: any) => {
+    handleClose();
+    dispatch(
+      updateOrderStatus({
+        orderId: id,
+        orderStatus: status,
+        jwt: localStorage.getItem("jwt"),
+      }),
+    );
   };
 
-  const handleUpdateOrder = (id: any, status: any) => {
-    console.log("Upadate Order", id, status);
-    handleClose();
-  };
+  useEffect(() => {
+    dispatch(fetchSellerOrders(localStorage.getItem("jwt")));
+  }, []);
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -77,80 +96,89 @@ export default function OrderTable() {
           <TableRow>
             <StyledTableCell sx={{ py: 2 }}>Order Id</StyledTableCell>
             <StyledTableCell sx={{ py: 2 }}>Products</StyledTableCell>
-            <StyledTableCell sx={{ py: 2 }} align="right">
+            <StyledTableCell sx={{ py: 2 }} align="left">
               Shipping Address
             </StyledTableCell>
-            <StyledTableCell sx={{ py: 2 }} align="right">
+            <StyledTableCell sx={{ py: 2 }} align="left">
               Order Status
             </StyledTableCell>
-            <StyledTableCell sx={{ py: 2 }} align="right">
+            <StyledTableCell sx={{ py: 2 }} align="left">
               Update
             </StyledTableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell sx={{ py: 3 }}>{row.name}</StyledTableCell>
+          {orders?.map((order) => (
+            <StyledTableRow key={order._id}>
+              {/* ORDER ID */}
+              <StyledTableCell sx={{ py: 3 }}>{order._id}</StyledTableCell>
 
               {/* PRODUCTS */}
               <StyledTableCell sx={{ py: 3 }}>
                 <div className="flex flex-col gap-4">
-                  {[1, 1, 1].map((item, index) => (
-                    <div key={index} className="flex gap-4 items-center">
-                      <img
-                        className="w-16 h-16 rounded-md object-cover"
-                        src="https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780"
-                      />
+                  {order?.orderItems?.map((item) => {
+                    const image =
+                      item?.product?.image?.[0] || "/placeholder.png";
 
-                      <div className="flex flex-col text-sm gap-1">
-                        <h1 className="font-medium">Title : Women Saree</h1>
-                        <h1>Price : Rs.2999</h1>
-                        <h1>Color : Yellow</h1>
-                        <h1>Size : Free</h1>
+                    return (
+                      <div key={item._id} className="flex gap-4 items-center">
+                        <img
+                          className="w-16 h-16 rounded-md object-cover"
+                          src={image}
+                        />
+
+                        <div className="flex flex-col text-sm gap-1">
+                          <h1 className="font-medium">
+                            {item?.product?.title}
+                          </h1>
+                          <h1>₹{item?.sellingPrice}</h1>
+                          <h1>Color: {item?.product?.color}</h1>
+                          <h1>Size: {item?.size}</h1>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </StyledTableCell>
 
               {/* ADDRESS */}
-              <StyledTableCell align="right" sx={{ py: 3 }}>
-                {row.fat}
+              <StyledTableCell align="left" sx={{ py: 3 }}>
+                <div className="text-sm">
+                  <p>{order?.shippingAddress?.address}</p>
+                  <p>{order?.shippingAddress?.city}</p>
+                  <p>{order?.shippingAddress?.state}</p>
+                </div>
               </StyledTableCell>
 
               {/* STATUS */}
-              <StyledTableCell align="right" sx={{ py: 3 }}>
-                <Chip label="Delivered" size="small" variant="outlined" />
+              <StyledTableCell align="left" sx={{ py: 3 }}>
+                <Chip
+                  label={order?.orderStatus}
+                  size="small"
+                  variant="outlined"
+                />
               </StyledTableCell>
 
               {/* UPDATE */}
-              <StyledTableCell align="right" sx={{ py: 3 }}>
+              <StyledTableCell align="left" sx={{ py: 3 }}>
                 <Button
-                  color="primary"
                   size="small"
                   variant="outlined"
-                  onClick={handleClick}
+                  onClick={(e) => handleClick(e, order._id)}
                 >
                   Status
                 </Button>
 
                 <Menu
-                  id="basic-menu"
                   anchorEl={anchorEl}
-                  open={open}
+                  open={open && selectedOrderId === order._id}
                   onClose={handleClose}
-                  slotProps={{
-                    list: {
-                      "aria-labelledby": "basic-button",
-                    },
-                  }}
                 >
                   {orderStatus.map((status) => (
                     <MenuItem
                       key={status.label}
-                      onClick={() => handleUpdateOrder(1, status.label)}
+                      onClick={() => handleUpdateOrder(order._id, status.label)}
                     >
                       {status.label}
                     </MenuItem>

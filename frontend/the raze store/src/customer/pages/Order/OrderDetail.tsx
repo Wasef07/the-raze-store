@@ -1,34 +1,70 @@
 import { Box, Button, Divider } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import OrderStepper from "./OrderStepper";
 import { Payment } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../../../Redux ToolKit/Store";
+import {
+  fetchOrderById,
+  fetchOrderItemById,
+} from "../../../Redux ToolKit/Features/Customer/OrderSlice";
+import { useParams } from "react-router";
 
 const OrderDetail = () => {
+  const dispatch = useAppDispatch();
+  const { orderItemId, orderId } = useParams();
+
+  const { orderItem, currentOrder } = useAppSelector(
+    (store) => store.order
+  );
+
+  useEffect(() => {
+    dispatch(
+      fetchOrderItemById({
+        jwt: localStorage.getItem("jwt"),
+        orderItemId,
+      })
+    );
+
+    dispatch(
+      fetchOrderById({
+        jwt: localStorage.getItem("jwt"),
+        orderId,
+      })
+    );
+  }, [orderItemId, orderId]);
+
+  const image =
+    orderItem?.product?.image?.[0] || "/placeholder.png";
+
   return (
     <Box className="space-y-8">
 
       {/* Product Preview */}
       <section className="flex flex-col items-center gap-4 text-center">
-
         <img
-          className="w-[100px]  object-cover rounded-lg border"
-          src="https://lajreedesigner.com/cdn/shop/files/KP-6026_1.jpg?v=1745490955&width=1780"
+          className="w-[100px] object-cover rounded-lg border"
+          src={image}
           alt=""
         />
 
         <div className="space-y-1">
-          <h1 className="font-semibold text-lg">The Raze Store</h1>
-          <p className="text-sm max-w-md">
-            Extraordinary Yellow Soft Silk Saree With Glowing Blouse Piece
-          </p>
-          <p className="text-sm text-gray-500">Size : Free</p>
-        </div>
+          <h1 className="font-semibold text-lg">
+            {currentOrder?.seller?.businessDetails?.businessName || "Store"}
+          </h1>
 
+          <p className="text-sm max-w-md">
+            {orderItem?.product?.title}
+          </p>
+
+          <p className="text-sm text-gray-500">
+            Size : {orderItem?.size}
+          </p>
+        </div>
       </section>
 
       {/* Order Stepper */}
       <section className="border border-gray-200 rounded-lg p-5 bg-white">
-        <OrderStepper />
+        <OrderStepper status={currentOrder?.orderStatus} />
       </section>
 
       {/* Delivery Address */}
@@ -37,13 +73,17 @@ const OrderDetail = () => {
 
         <div className="text-sm space-y-2">
           <div className="flex items-center gap-4 font-medium">
-            <p>Pablo Pandey</p>
+            <p>{currentOrder?.shippingAddress?.name}</p>
             <Divider flexItem orientation="vertical" />
-            <p>12324545667</p>
+            <p>{currentOrder?.shippingAddress?.mobile}</p>
           </div>
 
           <p className="text-gray-600">
-            Ripon Street, Kolkata - 09796
+            {currentOrder?.shippingAddress?.address},{" "}
+            {currentOrder?.shippingAddress?.locality},{" "}
+            {currentOrder?.shippingAddress?.city},{" "}
+            {currentOrder?.shippingAddress?.state} -{" "}
+            {currentOrder?.shippingAddress?.pincode}
           </p>
         </div>
       </section>
@@ -55,19 +95,30 @@ const OrderDetail = () => {
         <div className="flex justify-between items-center text-sm p-5 border-b">
           <div className="space-y-1">
             <p className="font-semibold">Total Item Price</p>
+
             <p className="text-gray-500">
-              You saved <span className="text-green-500 font-medium">₹6000</span> on this order
+              You saved{" "}
+              <span className="text-green-500 font-medium">
+                ₹
+                {(
+                  (currentOrder?.totalMrpPrice || 0) -
+                  (currentOrder?.totalSellingPrice || 0)
+                )}
+              </span>{" "}
+              on this order
             </p>
           </div>
 
-          <p className="font-semibold">₹12,545.00</p>
+          <p className="font-semibold">
+            ₹{currentOrder?.totalSellingPrice}
+          </p>
         </div>
 
         {/* Payment */}
         <div className="p-5">
           <div className="bg-teal-50 px-4 py-3 rounded-md text-sm font-medium flex items-center gap-3 text-teal-700">
             <Payment fontSize="small" />
-            <p>Pay on Delivery</p>
+            <p>{currentOrder?.paymentStatus}</p>
           </div>
         </div>
 
@@ -76,7 +127,8 @@ const OrderDetail = () => {
         {/* Seller */}
         <div className="px-5 py-4 text-sm">
           <p>
-            <span className="font-semibold">Sold By:</span> Pablo Clothing
+            <span className="font-semibold">Sold By:</span>{" "}
+            {currentOrder?.seller?.businessDetails?.businessName}
           </p>
         </div>
 
@@ -84,17 +136,11 @@ const OrderDetail = () => {
 
         {/* Action */}
         <div className="p-6">
-          <Button
-            fullWidth
-            variant="outlined"
-            color="error"
-          >
+          <Button fullWidth variant="outlined" color="error">
             Cancel Order
           </Button>
         </div>
-
       </section>
-
     </Box>
   );
 };

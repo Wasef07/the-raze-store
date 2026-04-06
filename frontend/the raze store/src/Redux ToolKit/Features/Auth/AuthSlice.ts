@@ -51,7 +51,12 @@ export const signin = createAsyncThunk(
       const response = await api.post(`${API_URL}/signin`, signinRequest);
       console.log("Response:", response.data);
       localStorage.setItem("jwt", response.data.jwt);
-      signinRequest.navigate("/");
+      if (response.data.role == "ROLE_ADMIN") {
+        signinRequest.navigate("/admin");
+      } else {
+        signinRequest.navigate("/");
+      }
+
       return response.data;
     } catch (error: any) {
       console.log("Signup Error:", error.response?.data);
@@ -91,7 +96,7 @@ export const { logout } = authSlice.actions;
 export const performLogout = () => async (dispatch: any) => {
   dispatch(logout());
   dispatch(resetUserState());
-  dispatch(resetSellerAuthState())
+  dispatch(resetSellerAuthState());
   localStorage.removeItem("jwt");
 };
 

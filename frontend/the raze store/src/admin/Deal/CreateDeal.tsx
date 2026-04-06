@@ -12,15 +12,26 @@ import {
   Paper,
 } from "@mui/material";
 import { menLevelTwo } from "../../data/Category/LevelTwo/menLevelTwo";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import { createDeal } from "../../Redux ToolKit/Features/Admin/DealSlice";
 
 const CreateDeal = () => {
+  const homeCategories = useAppSelector(
+    (store) => store.homeCategory.homeCategories,
+  );
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       discount: 0,
-      category: "",
+      homeCategory: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(
+        createDeal({
+          ...values,
+          discount: Number(values.discount),
+        }),
+      );
     },
   });
 
@@ -50,7 +61,7 @@ const CreateDeal = () => {
           <div>
             <TextField
               fullWidth
-              name="dicount"
+              name="discount"
               label="Discount (%)"
               value={formik.values.discount}
               onChange={formik.handleChange}
@@ -63,16 +74,16 @@ const CreateDeal = () => {
               <InputLabel id="category-label">Category</InputLabel>
 
               <Select
-                name="category"
+                name="homeCategory"
                 labelId="category-label"
                 label="Category"
-                value={formik.values.category}
+                value={formik.values.homeCategory}
                 onChange={formik.handleChange}
               >
                 <MenuItem value="none">None</MenuItem>
 
-                {menLevelTwo.map((item, index) => (
-                  <MenuItem key={index} value={item.categoryId}>
+                {homeCategories?.deals?.map((item, index) => (
+                  <MenuItem key={index} value={item._id}>
                     {item.name}
                   </MenuItem>
                 ))}

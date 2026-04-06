@@ -5,6 +5,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { Dayjs } from "dayjs";
+import { useAppDispatch } from "../../Redux ToolKit/Store";
+import { createCoupon } from "../../Redux ToolKit/Features/Admin/CouponSlice";
 
 interface CouponFormValues {
   code: string;
@@ -15,6 +17,8 @@ interface CouponFormValues {
 }
 
 const CouponForm = () => {
+  const dispatch = useAppDispatch();
+
   const formik = useFormik<CouponFormValues>({
     initialValues: {
       code: "",
@@ -25,6 +29,7 @@ const CouponForm = () => {
     },
     onSubmit: (values) => {
       console.log(values);
+      dispatch(createCoupon({coupon:values,jwt:localStorage.getItem("jwt")}))
     },
   });
 

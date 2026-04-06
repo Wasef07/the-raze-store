@@ -14,8 +14,11 @@ import {
   type SelectChangeEvent,
   Box,
   Typography,
+  Button,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import { fetchSeller } from "../../Redux ToolKit/Features/Seller/SellerSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,24 +47,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 
 const accountStatus = [
   {
@@ -98,12 +83,19 @@ const accountStatus = [
 ];
 
 export default function SellerTable() {
-  const [status, setStaus] = React.useState("");
+  const dispatch = useAppDispatch();
+  const seller = useAppSelector((store) => store.seller);
+  const [status, setStaus] = React.useState(accountStatus[0].status);
 
   const handleChange = (event: SelectChangeEvent) => {
     setStaus(event.target.value as string);
   };
 
+  useEffect(() => {
+    dispatch(fetchSeller(status));
+  }, [status]);
+
+  console.log("Seller", seller);
   return (
     <>
       {/* Filter Section */}
@@ -139,45 +131,60 @@ export default function SellerTable() {
           <TableHead>
             <TableRow>
               <StyledTableCell>Seller Name</StyledTableCell>
-              <StyledTableCell align="right">Email</StyledTableCell>
-              <StyledTableCell align="right">Mobile</StyledTableCell>
-              <StyledTableCell align="right">GSTIN</StyledTableCell>
-              <StyledTableCell align="right">Business Name</StyledTableCell>
-              <StyledTableCell align="right">Account Status</StyledTableCell>
-              <StyledTableCell align="right">Change Status</StyledTableCell>
+              <StyledTableCell align="left">Email</StyledTableCell>
+              <StyledTableCell align="left">Mobile</StyledTableCell>
+              <StyledTableCell align="left">GSTIN</StyledTableCell>
+              <StyledTableCell align="left">Business Name</StyledTableCell>
+              <StyledTableCell align="left">Account Status</StyledTableCell>
+              <StyledTableCell align="left">Change Status</StyledTableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.name}>
+            {seller?.sellers.map((item) => (
+              <StyledTableRow key={item._id}>
+                {/* Seller Info */}
                 <StyledTableCell component="th" scope="row">
                   <Box>
-                    <Typography fontWeight={600}>{row.name}</Typography>
-
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                    >
-                      January 26, 2025
-                    </Typography>
-
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      display="block"
-                    >
-                      12:55:41 AM
-                    </Typography>
+                    <Typography fontWeight={600}>{item.name}</Typography>
                   </Box>
                 </StyledTableCell>
 
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                {/* Business Name */}
+                <StyledTableCell align="left">
+                  {item.email}
+                </StyledTableCell>
+
+                {/* GSTIN */}
+                <StyledTableCell align="left">{item.mobile}</StyledTableCell>
+
+                {/* Bank Name */}
+                <StyledTableCell align="left">
+                  {item.GSTIN}
+                </StyledTableCell>
+
+                {/* Account Holder */}
+                <StyledTableCell align="left">
+                  {item.businessDetails?.businessName || "-"}
+                </StyledTableCell>
+
+                {/* Status */}
+                <StyledTableCell align="left">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      item.accountStatus === "PENDING_VERIFICATION"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : item.accountStatus === "ACTIVE"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {item.accountStatus}
+                  </span>
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  <Button>Update</Button>
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

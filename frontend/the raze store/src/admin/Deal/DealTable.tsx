@@ -8,6 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { IconButton, Box, Typography } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../../Redux ToolKit/Store";
+import { deleteDeal, getAllDeals } from "../../Redux ToolKit/Features/Admin/DealSlice";
+import { useEffect } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,7 +45,7 @@ function createData(
   calories: number,
   fat: number,
   carbs: number,
-  protein: number
+  protein: number,
 ) {
   return { name, calories, fat, carbs, protein };
 }
@@ -56,6 +59,15 @@ const rows = [
 ];
 
 export default function DealTable() {
+  const dispatch = useAppDispatch();
+  const deal = useAppSelector(store => store.deal);
+  useEffect(() => {
+    dispatch(getAllDeals(localStorage.getItem("jwt")));
+  },[dispatch]);
+
+  const handleDeleteDeal=(id)=>{
+    dispatch(deleteDeal(id))
+  }
   return (
     <TableContainer
       component={Paper}
@@ -78,69 +90,43 @@ export default function DealTable() {
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                <Box>
-                  <Typography fontWeight={600}>{row.name}</Typography>
+          {deal.deals?.map((item, index) => (
+            <StyledTableRow key={item._id}>
+              {/* No */}
+              <StyledTableCell>{index + 1}</StyledTableCell>
 
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                  >
-                    January 26, 2025
-                  </Typography>
-
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    display="block"
-                  >
-                    12:55:41 AM
-                  </Typography>
-                </Box>
-              </StyledTableCell>
-
-              <StyledTableCell align="center">
+              {/* Image */}
+              <StyledTableCell align="left">
                 <img
-                  className="w-20 h-14 object-cover rounded-lg shadow-sm"
-                  src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQc-cZH8UUPg6ALNCskk4c9tocmRFlERyjJ5eQzT2gNHxNdDl5YUDmK-6wP1JPCqpSqSjg4GmNBZiHIwlgm3lZBkO_WxcN-My0H74GG3smYtTEvsu8Oozl1pQ"
+                  className="w-20 h-30 object-cover rounded-lg shadow-sm"
+                  src={item.homeCategory?.image}
+                  alt="deal"
                 />
               </StyledTableCell>
 
+              {/* Category */}
               <StyledTableCell align="left">
-                {row.calories}
+                {item.homeCategory?.name}
               </StyledTableCell>
 
-              
-
+              {/* Discount */}
               <StyledTableCell align="right">
-                {row.carbs}
+                <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                  {item.discount ? `${item.discount}%` : "-"}
+                </span>
               </StyledTableCell>
 
+              {/* Edit */}
               <StyledTableCell align="center">
-                <IconButton
-                  sx={{
-                    transition: "0.2s",
-                    "&:hover": {
-                      backgroundColor: "rgba(25,118,210,0.08)",
-                    },
-                  }}
-                >
-                  <Edit color="primary"/>
+                <IconButton>
+                  <Edit color="primary" />
                 </IconButton>
               </StyledTableCell>
 
+              {/* Delete */}
               <StyledTableCell align="center">
-                <IconButton
-                  sx={{
-                    transition: "0.2s",
-                    "&:hover": {
-                      backgroundColor: "rgba(25,118,210,0.08)",
-                    },
-                  }}
-                >
-                  <Delete color="error"/>
+                <IconButton onClick={()=>handleDeleteDeal(item._id)}>
+                  <Delete color="error" />
                 </IconButton>
               </StyledTableCell>
             </StyledTableRow>

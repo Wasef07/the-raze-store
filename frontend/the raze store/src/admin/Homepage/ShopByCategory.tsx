@@ -1,10 +1,12 @@
 import React from 'react'
 import HomeCategoryTable from './HomeCatgoryTable'
+import { useAppSelector } from '../../Redux ToolKit/Store';
 
-const image = "https://ikiru.in/cdn/shop/files/uCTGlyQu0dcroSIZsAV_92E32zUA6pgKUvkVLdXHd9A.webp?v=1763923747&width=1182"
+
 const ShopByCategory = () => {
+  const homeCategories = useAppSelector((store)=>store.homeCategory.homeCategories);
   return (
-    <HomeCategoryTable image={image}/>
+    <HomeCategoryTable categories={homeCategories?.shopByCategories}/>
   )
 }
 

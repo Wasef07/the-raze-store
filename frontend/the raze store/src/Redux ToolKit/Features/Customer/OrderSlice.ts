@@ -39,7 +39,7 @@ export const fetchOrderById = createAsyncThunk<any, any>(
           Authorization: `Bearer ${jwt}`,
         },
       });
-      console.log("Ftech Order By Id", response.data);
+      console.log("Fetch Order By Id", response.data);
       return response.data;
     } catch (error: any) {
       console.log("Error:", error.response?.data);

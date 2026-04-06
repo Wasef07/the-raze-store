@@ -1,10 +1,12 @@
 import React from 'react'
 import HomeCategoryTable from './HomeCatgoryTable'
+import { useAppSelector } from '../../Redux ToolKit/Store';
 
-const image = "https://www.pngmart.com/files/15/Apple-iPhone-11-PNG-Background-Image.png" 
+
 const ElectronicsTable = () => {
+  const homeCategories = useAppSelector((store)=>store.homeCategory.homeCategories);
   return (
-    <HomeCategoryTable image={image}/>
+    <HomeCategoryTable categories={homeCategories?.electricCategories}/>
   )
 }
 

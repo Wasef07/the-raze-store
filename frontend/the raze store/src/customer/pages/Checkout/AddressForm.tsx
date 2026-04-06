@@ -1,8 +1,11 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
+import { createOrder } from "../../../Redux ToolKit/Features/Customer/OrderSlice";
+import { useAppDispatch } from "../../../Redux ToolKit/Store";
 
-const AddressForm = () => {
+const AddressForm = ({paymentGateway}) => {
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -15,6 +18,7 @@ const AddressForm = () => {
     },
     onSubmit: (value) => {
       console.log("Form Submitted : ", value);
+      dispatch(createOrder({address:value,jwt:localStorage.getItem("jwt"),paymentGateway}));
     },
   });
 

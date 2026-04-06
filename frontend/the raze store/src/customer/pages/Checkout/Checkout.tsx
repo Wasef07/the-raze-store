@@ -32,7 +32,7 @@ const style = {
 
 const Checkout = () => {
   const [open, setOpen] = React.useState(false);
-  
+  const paymentGateway = "RAZORPAY";
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [selectedAddress, setSelectedAddress] = useState(1);
@@ -128,7 +128,7 @@ const Checkout = () => {
     >
       <CloseIcon/>
     </IconButton>
-    <AddressForm />
+    <AddressForm paymentGateway={paymentGateway}/>
   </Box>
 </Modal>
 

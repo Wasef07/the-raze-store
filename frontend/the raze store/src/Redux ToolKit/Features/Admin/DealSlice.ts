@@ -107,7 +107,7 @@ const dealSlice = createSlice({
 
     builder.addCase(getAllDeals.fulfilled, (state, action) => {
       state.loading = false;
-      state.deals = action.payload;
+      state.deals = action.payload.deals;
     });
 
     builder.addCase(getAllDeals.rejected, (state, action) => {

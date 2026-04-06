@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import OrderItemCard from "./OrderItemCard";
 import { useNavigate } from "react-router";
+import store, {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../Redux ToolKit/Store";
+import { fetchUserOrderHistory } from "../../../Redux ToolKit/Features/Customer/OrderSlice";
 
 const Order = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const order = useAppSelector((store) => store.order);
+  useEffect(() => {
+    dispatch(fetchUserOrderHistory(localStorage.getItem("jwt")));
+  }, []);
   return (
     <div className="space-y-6">
       <div>
@@ -11,9 +22,11 @@ const Order = () => {
       </div>
 
       <div className="space-y-4">
-        {[1, 1, 1, 1, 1].map((_, index) => (
-          <OrderItemCard key={index} />
-        ))}
+        {order?.orders?.map((ord) =>
+          ord?.orderItems?.map((item) => (
+            <OrderItemCard key={item._id} order={ord} item={item} />
+          )),
+        )}
       </div>
     </div>
   );

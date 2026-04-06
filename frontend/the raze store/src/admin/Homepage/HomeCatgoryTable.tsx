@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { IconButton, Box, Typography } from "@mui/material";
 import { Edit } from "@mui/icons-material";
+import { useAppSelector } from "../../Redux ToolKit/Store";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,7 +56,8 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function HomeCategoryTable({image}:any) {
+export default function HomeCategoryTable({categories}:any) {
+  
   return (
     <TableContainer
       component={Paper}
@@ -77,11 +79,11 @@ export default function HomeCategoryTable({image}:any) {
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {categories?.map((item,index) => (
+            <StyledTableRow key={item.name+index}>
               <StyledTableCell component="th" scope="row">
                 <Box>
-                  <Typography fontWeight={600}>{row.name}</Typography>
+                  <Typography fontWeight={600}>{item.name}</Typography>
 
                   <Typography
                     variant="caption"
@@ -101,18 +103,18 @@ export default function HomeCategoryTable({image}:any) {
               </StyledTableCell>
 
               <StyledTableCell align="left">
-                {row.calories}
+                {item._id}
               </StyledTableCell>
 
               <StyledTableCell align="center">
                 <img
                   className="w-20 h-14 object-cover rounded-lg shadow-sm"
-                  src={image}
+                  src={item.image}
                 />
               </StyledTableCell>
 
               <StyledTableCell align="right">
-                {row.carbs}
+                {item.categoryId}
               </StyledTableCell>
 
               <StyledTableCell align="center">

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../common/Navbar";
 import SellerDrawerList from "../Sidebar/SellerDrawerList";
 import SellerRoutes from "../../Routes/SellerRoutes";
+import { useAppDispatch } from "../../Redux ToolKit/Store";
+import { fetchSellerReport } from "../../Redux ToolKit/Features/Seller/SellerSlice";
 
 const SellerDashboard = () => {
+  const dispatch = useAppDispatch();
+  useEffect(()=>{
+    dispatch(fetchSellerReport(localStorage.getItem("jwt")))
+  },[])
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar DrawerList={SellerDrawerList} panelName="Seller Panel"/>
