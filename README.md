@@ -1,4 +1,4 @@
-# 🛒 The Raze Store – Multi-Vendor E-commerce Platform *(In Progress)*
+#  The Raze Store – Multi-Vendor E-commerce Platform *(In Progress)*
 
 A full-stack multi-vendor e-commerce platform inspired by Amazon, built using the MERN stack.  
 The platform enables customers, sellers, and admins to interact through a scalable, secure, and feature-rich ecosystem.
@@ -11,7 +11,7 @@ The platform enables customers, sellers, and admins to interact through a scalab
 - Secure **OTP-based authentication** (passwordless login using NodeMailer)  
 - Advanced product filtering (category, price, discounts)  
 - Real-time **cart & wishlist management**  
-- Seamless checkout with **Razorpay (India)** and **Stripe (International)**  
+- Seamless checkout with **Razorpay** 
 
 ---
 
@@ -41,7 +41,7 @@ The platform enables customers, sellers, and admins to interact through a scalab
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB (Mongoose)  
 - **Authentication:** JWT, NodeMailer (OTP)  
-- **Payments:** Razorpay, Stripe  
+- **Payments:** Razorpay
 - **Media Storage:** Cloudinary  
 
 ---
